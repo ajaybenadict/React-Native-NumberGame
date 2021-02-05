@@ -1,13 +1,27 @@
 import React from "react";
-import { Button, StyleSheet, View, Image, Text } from "react-native";
-import Card from "../components/Card";
-import NumberContainer from "../components/NumberContainer";
+import {
+  Button,
+  StyleSheet,
+  View,
+  Image,
+  Text,
+  ScrollView,
+} from "react-native";
+
 import TitleText from "../components/TitleText";
 import BodyText from "../components/BodyText";
 import Colors from "../components/constants/Colors";
 
+const renderItemList = (value, numOfRounds) => (
+  <View key={value} style={styles.listItem}>
+    <BodyText>#{numOfRounds}</BodyText>
+    <BodyText>{value}</BodyText>
+  </View>
+);
+
 const GameOver = (props) => {
   console.log(props.onOutput);
+  // const onOutput = props;
   return (
     <View style={styles.cardContainer}>
       <TitleText style={styles.titleContainer}>The Game is Over!</TitleText>
@@ -33,12 +47,21 @@ const GameOver = (props) => {
           <Button title="START A NEW GAME" onPress={props.onNewGame} />
         </View>
       </View>
+
+      <View style={styles.listContainer}>
+        <ScrollView contentContainerStyle={styles.list}>
+          {props.outputData.map((guess, index) =>
+            renderItemList(guess, props.outputData.length - index)
+          )}
+        </ScrollView>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   cardContainer: {
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -74,6 +97,24 @@ const styles = StyleSheet.create({
   resultContainer: {
     color: Colors.primary,
     fontFamily: "open-sans-bold",
+  },
+  listItem: {
+    flexDirection: "row",
+    borderWidth: 1,
+    borderColor: "black",
+    padding: 10,
+    marginVertical: 10,
+    width: "70%",
+    justifyContent: "space-around",
+  },
+  listContainer: {
+    flex: 1,
+    width: "80%",
+  },
+  list: {
+    flexGrow: 1,
+    alignItems: "center",
+    justifyContent: "flex-end",
   },
 });
 

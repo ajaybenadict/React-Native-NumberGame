@@ -20,6 +20,7 @@ export default function App() {
   const [userNumber, setUserNumber] = useState();
   const [guessRounds, setGuessRounds] = useState(0);
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [dataArray, setDataArray] = useState([userNumber]);
 
   if (!dataLoaded) {
     return (
@@ -34,13 +35,15 @@ export default function App() {
     setUserNumber(selectedNumber);
   };
 
-  const gameOverHandler = (numOfRounds) => {
-    setGuessRounds(numOfRounds);
+  const gameOverHandler = ([...numOfRounds]) => {
+    setDataArray([...numOfRounds]);
+    setGuessRounds(dataArray.length);
   };
 
   const startNewGameHandler = () => {
     setUserNumber("");
     setGuessRounds("");
+    setDataArray([]);
   };
 
   let content = <StartGameScreen onStartGame={startGameHandler} />;
@@ -53,7 +56,8 @@ export default function App() {
     content = (
       <GameOver
         onOutput={userNumber}
-        numOfGuesses={guessRounds}
+        numOfGuesses={dataArray.length}
+        outputData={dataArray}
         onNewGame={startNewGameHandler}
       />
     );

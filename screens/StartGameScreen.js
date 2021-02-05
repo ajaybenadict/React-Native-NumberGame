@@ -78,13 +78,21 @@ const StartGameScreen = (props) => {
             value={enteredValue}
           />
           <View style={styles.buttonContainer}>
-            <MainButton style={styles.button} onPress={resetHandler}>
-              Reset
-            </MainButton>
+            <View style={styles.button}>
+              <Button
+                color={Colors.primary}
+                title="Reset"
+                onPress={resetHandler}
+              />
+            </View>
 
-            <MainButton style={styles.button} onPress={confirmHandler}>
-              Confirm
-            </MainButton>
+            <View style={styles.button}>
+              <Button
+                color={Colors.accent}
+                title="Confirm"
+                onPress={confirmHandler}
+              />
+            </View>
           </View>
         </Card>
         {confirmedOutput}
@@ -114,7 +122,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   button: {
-    width: "100%",
+    width: "50%",
+    maxWidth: 100,
   },
   input: {
     width: 50,
