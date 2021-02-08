@@ -6,6 +6,7 @@ import {
   Alert,
   FlatList,
   Dimensions,
+  ScrollView,
 } from "react-native";
 import Card from "../components/Card";
 import NumberContainer from "../components/NumberContainer";
@@ -36,6 +37,19 @@ const GameScreen = (props) => {
   const [pastGuesses, setPastGuesses] = useState([initialGuess.toString()]);
   const currentLow = useRef(1);
   const currentHigh = useRef(100);
+  const [availableHeight, setAvailableHeight] = useState(
+    Dimensions.get("window").height
+  );
+
+  useEffect(() => {
+    const updateLayout = () => {
+      setAvailableHeight(Dimensions.get("window").height);
+    };
+    Dimensions.addEventListener("change", updateLayout);
+    return () => {
+      Dimensions.removeEventListener("change", updateLayout);
+    };
+  });
 
   const { userChoice, onGameOver } = props;
   useEffect(() => {
@@ -69,9 +83,48 @@ const GameScreen = (props) => {
     //setRounds((curRound) => curRound + 1)
     setPastGuesses((curPastGuess) => [nextNumber.toString(), ...curPastGuess]);
   };
+
+  if (availableHeight < 500) {
+    return (
+      <View style={styles.textContainer}>
+        <Text>Opponent's Guess</Text>
+        <View style={styles.controls}>
+          <MainButton
+            style={styles.button}
+            onPress={nextGuessHandler.bind(this, "lower")}
+          >
+            <Ionicons name="md-remove" size={24} color="white" />
+          </MainButton>
+
+          <NumberContainer>{currentGuess}</NumberContainer>
+
+          <MainButton
+            style={styles.button}
+            onPress={nextGuessHandler.bind(this, "greater")}
+          >
+            <Ionicons name="md-add" size={24} color="white" />
+          </MainButton>
+        </View>
+
+        <View style={styles.listContainer}>
+          {/* <ScrollView contentContainerStyle={styles.list}>
+          {pastGuesses.map((guess, index) =>
+            renderItemList(guess, pastGuesses.length - index)
+          )}
+        </ScrollView> */}
+          <FlatList
+            contentContainerStyle={styles.list}
+            keyExtractor={(item) => item}
+            data={pastGuesses}
+            renderItem={renderItemList.bind(this, pastGuesses.length)}
+          />
+        </View>
+      </View>
+    );
+  }
   return (
     <View style={styles.textContainer}>
-      <Card style={styles.CardContainer}>
+      <Card style={{ ...styles.CardContainer, height: availableHeight / 3 }}>
         <Text>Opponent's Guess</Text>
         <NumberContainer>
           <View>
@@ -120,10 +173,15 @@ const styles = StyleSheet.create({
   CardContainer: {
     alignItems: "center",
     justifyContent: "center",
-    height: Dimensions.get("window").height > 600 ? 300 : 150,
   },
   button: {
     borderRadius: 25,
+  },
+  controls: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    width: "80%",
   },
   buttonContainer: {
     flexDirection: "row",

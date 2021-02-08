@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: Dimensions.get("window").height > 600 ? 20 : 5,
     textAlign: "center",
+    fontSize: Dimensions.get("window").height > 600 ? 20 : 12,
   },
   buttonContainer: {
     flexDirection: "row",
