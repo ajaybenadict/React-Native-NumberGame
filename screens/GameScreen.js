@@ -4,8 +4,8 @@ import {
   StyleSheet,
   Text,
   Alert,
-  ScrollView,
   FlatList,
+  Dimensions,
 } from "react-native";
 import Card from "../components/Card";
 import NumberContainer from "../components/NumberContainer";
@@ -65,6 +65,7 @@ const GameScreen = (props) => {
       currentGuess
     );
     setCurrentGuess(nextNumber);
+
     //setRounds((curRound) => curRound + 1)
     setPastGuesses((curPastGuess) => [nextNumber.toString(), ...curPastGuess]);
   };
@@ -119,15 +120,15 @@ const styles = StyleSheet.create({
   CardContainer: {
     alignItems: "center",
     justifyContent: "center",
+    height: Dimensions.get("window").height > 600 ? 300 : 150,
   },
   button: {
-    width: "100%",
     borderRadius: 25,
   },
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
-    width: 300,
+    width: Dimensions.get("window").height > 600 ? 300 : 200,
     maxWidth: "90%",
   },
   listContainer: {
@@ -136,15 +137,14 @@ const styles = StyleSheet.create({
   },
   list: {
     flexGrow: 1,
-
     justifyContent: "flex-end",
   },
   listItem: {
     flexDirection: "row",
     borderWidth: 1,
     borderColor: "black",
-    padding: 15,
-    marginVertical: 10,
+    padding: Dimensions.get("window").height > 600 ? 15 : 5,
+    marginVertical: Dimensions.get("window").height > 600 ? 10 : 5,
     width: "100%",
     justifyContent: "space-around",
   },

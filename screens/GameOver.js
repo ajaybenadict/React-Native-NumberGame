@@ -6,6 +6,7 @@ import {
   Image,
   Text,
   ScrollView,
+  Dimensions,
 } from "react-native";
 
 import TitleText from "../components/TitleText";
@@ -20,42 +21,46 @@ const renderItemList = (value, numOfRounds) => (
 );
 
 const GameOver = (props) => {
-  console.log(props.onOutput);
   // const onOutput = props;
   return (
-    <View style={styles.cardContainer}>
-      <TitleText style={styles.titleContainer}>The Game is Over!</TitleText>
-      <View style={styles.imageContainer}>
-        <Image
-          //source={require("../assets/success.png")}
-          source={{
-            uri:
-              "https://images.pexels.com/photos/6945/sunset-summer-golden-hour-paul-filitchkin.jpg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-          }}
-          style={styles.image}
-        />
-      </View>
+    <ScrollView>
       <View style={styles.cardContainer}>
-        <BodyText style={styles.textContainer}>
-          Your number is{" "}
-          <Text style={styles.resultContainer}>{props.onOutput}</Text> and, The
-          Number of guesses taken is{" "}
-          <Text style={styles.resultContainer}>{props.numOfGuesses}</Text>
-        </BodyText>
+        <TitleText style={styles.titleContainer}>The Game is Over!</TitleText>
+        <View style={styles.imageContainer}>
+          <Image
+            //source={require("../assets/success.png")}
+            source={{
+              uri:
+                "https://images.pexels.com/photos/6945/sunset-summer-golden-hour-paul-filitchkin.jpg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+            }}
+            style={styles.image}
+          />
+        </View>
+        <View style={styles.cardContainer}>
+          <BodyText style={styles.textContainer}>
+            Your number is{" "}
+            <Text style={styles.resultContainer}>{props.onOutput}</Text> and,
+            The Number of guesses taken is{" "}
+            <Text style={styles.resultContainer}>{props.numOfGuesses}</Text>
+          </BodyText>
 
-        <View style={styles.buttonContainer}>
-          <Button title="START A NEW GAME" onPress={props.onNewGame} />
+          <View style={styles.buttonContainer}>
+            <Button title="START A NEW GAME" onPress={props.onNewGame} />
+          </View>
+        </View>
+
+        <View style={styles.listContainer}>
+          <ScrollView contentContainerStyle={styles.list}>
+            <Text style={styles.textFinal}>
+              Total Guesses made by your mobile
+            </Text>
+            {props.outputData.map((guess, index) =>
+              renderItemList(guess, props.outputData.length - index)
+            )}
+          </ScrollView>
         </View>
       </View>
-
-      <View style={styles.listContainer}>
-        <ScrollView contentContainerStyle={styles.list}>
-          {props.outputData.map((guess, index) =>
-            renderItemList(guess, props.outputData.length - index)
-          )}
-        </ScrollView>
-      </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -67,12 +72,12 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     fontSize: 18,
-    marginVertical: 20,
+    marginVertical: Dimensions.get("window").height > 600 ? 20 : 5,
   },
   textContainer: {
     fontSize: 18,
     padding: 10,
-    marginVertical: 20,
+    marginVertical: Dimensions.get("window").height > 600 ? 20 : 5,
     textAlign: "center",
   },
   buttonContainer: {
@@ -92,7 +97,7 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     borderColor: Colors.primary,
     overflow: "hidden",
-    marginVertical: 20,
+    marginVertical: Dimensions.get("window").height > 600 ? 20 : 5,
   },
   resultContainer: {
     color: Colors.primary,
@@ -100,16 +105,22 @@ const styles = StyleSheet.create({
   },
   listItem: {
     flexDirection: "row",
-    borderWidth: 1,
-    borderColor: "black",
-    padding: 10,
-    marginVertical: 10,
+    padding: Dimensions.get("window").height > 600 ? 10 : 4,
+    marginVertical: Dimensions.get("window").height > 600 ? 10 : 5,
     width: "70%",
     justifyContent: "space-around",
+    borderColor: "black",
+    borderRadius: 1,
+    borderWidth: 1,
+  },
+  textFinal: {
+    fontFamily: "open-sans-bold",
+    marginVertical: 10,
   },
   listContainer: {
     flex: 1,
     width: "80%",
+    marginVertical: 5,
   },
   list: {
     flexGrow: 1,

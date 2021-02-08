@@ -1,5 +1,11 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
 import Colors from "./constants/Colors";
 
 const MainButton = (props) => {
@@ -15,9 +21,10 @@ const MainButton = (props) => {
 };
 const styles = StyleSheet.create({
   buttonContainer: {
+    flexDirection: "row",
     backgroundColor: Colors.primary,
-    paddingVertical: 15,
-    paddingHorizontal: 25,
+    paddingVertical: Dimensions.get("window").height > 600 ? 15 : 8,
+    paddingHorizontal: Dimensions.get("window").height > 600 ? 25 : 15,
     borderColor: "black",
     borderWidth: 2,
     borderRadius: 8,
